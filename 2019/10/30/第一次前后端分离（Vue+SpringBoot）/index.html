@@ -172,7 +172,7 @@
 			
 				<div class="m_search">
 					<form name="searchform" class="form u-search-form">
-						<input type="text" class="input u-search-input" placeholder="Search" />
+						<input type="text" class="input u-search-input" placeholder="搜索" />
 						<i class="icon fas fa-search fa-fw"></i>
 					</form>
 				</div>
@@ -373,8 +373,8 @@
 <p>Login里的代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">      用户名:&lt;input type=&quot;text&quot; v-model=&quot;loginForm.username&quot; placeholder=&quot;请输入用户名&quot;/&gt;</span><br><span class="line">      &lt;br&gt;&lt;br&gt;</span><br><span class="line">      密码： &lt;input type=&quot;password&quot; v-model=&quot;loginForm.password&quot; placeholder=&quot;请输入密码&quot;/&gt;</span><br><span class="line">      &lt;br&gt;&lt;br&gt;</span><br><span class="line">      &lt;button v-on:click=&quot;login&quot;&gt;登录&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">  export default &#123;</span><br><span class="line">    name: &apos;Login&apos;,</span><br><span class="line">    data () &#123;</span><br><span class="line">      return &#123;</span><br><span class="line">        loginForm: &#123;</span><br><span class="line">          username: &apos;&apos;,</span><br><span class="line">          password: &apos;&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        responseResult: []</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">      login () &#123;</span><br><span class="line">        this.$axios</span><br><span class="line">          .post(&apos;/login&apos;, &#123;</span><br><span class="line">            username: this.loginForm.username,</span><br><span class="line">            password: this.loginForm.password</span><br><span class="line">          &#125;)</span><br><span class="line">          .then(successResponse =&gt; &#123;</span><br><span class="line">            if (successResponse.data.code === 200) &#123;</span><br><span class="line">              this.$router.replace(&#123;path: &apos;/index&apos;&#125;)</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">          .catch(failResponse =&gt; &#123;</span><br><span class="line">          &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-<p>template标签中是一个简单的登录界面，<script>标签中的methods里定义了login的点击方法（v-on:click="login"），向后端/login接口发送数据，如果获得了成功的响应，则能跳至/index页面。</p>
-<h4 id="1-2-MainIndex-Vue"><a href="#1-2-MainIndex-Vue" class="headerlink" title="1.2 MainIndex.Vue"></a>1.2 MainIndex.Vue</h4><p>在<code>src\components</code>目录下New->Directory,命名为home，在home目录下New->Vue Component,命名为MainIndex。</p>
+<p>template标签中是一个简单的登录界面，script标签中的methods里定义了login的点击方法（v-on:click=”login”），向后端/login接口发送数据，如果获得了成功的响应，则能跳至/index页面。</p>
+<h4 id="1-2-MainIndex-Vue"><a href="#1-2-MainIndex-Vue" class="headerlink" title="1.2 MainIndex.Vue"></a>1.2 MainIndex.Vue</h4><p>在<code>src\components</code>目录下New-&gt;Directory,命名为home，在home目录下New-&gt;Vue Component,命名为MainIndex。</p>
 <p>代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      恭喜你完成了你的第一个前后端分离项目！</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">    name: &apos;AppIndex&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
 
@@ -394,15 +394,15 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.post(&apos;/login&apos;, &#123;</span><br><span class="line">            username: this.loginForm.username,</span><br><span class="line">            password: this.loginForm.password</span><br><span class="line">          &#125;)</span><br></pre></td></tr></table></figure>
 
 <p>所以，在后端创建一个形式一致的类来接收这个JS对象。</p>
-<p>在<code>src\main\java\com\example\springdemo1</code>目录下New->Directory，<code>pojo</code>.然后New->Java Class，<code>User</code>类，代码如下：</p>
+<p>在<code>src\main\java\com\example\springdemo1</code>目录下New-&gt;Directory，<code>pojo</code>.然后New-&gt;Java Class，<code>User</code>类，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.springdemo1.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> id;</span><br><span class="line">    String username;</span><br><span class="line">    String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-Result-类"><a href="#2-Result-类" class="headerlink" title="2. Result 类"></a>2. Result 类</h3><p>依旧在<code>src\main\java\com\example\springdemo1</code>目录下New->Directory，<code>result</code>.</p>
-<p>New->Java Class，<code>Result</code>类。Result类用来构造响应码。代码如下：</p>
+<h3 id="2-Result-类"><a href="#2-Result-类" class="headerlink" title="2. Result 类"></a>2. Result 类</h3><p>依旧在<code>src\main\java\com\example\springdemo1</code>目录下New-&gt;Directory，<code>result</code>.</p>
+<p>New-&gt;Java Class，<code>Result</code>类。Result类用来构造响应码。代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.springdemo1.result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span> </span>&#123;</span><br><span class="line">    <span class="comment">//响应码</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Result</span><span class="params">(<span class="keyword">int</span> code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCode</span><span class="params">(<span class="keyword">int</span> code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-LoginController"><a href="#3-LoginController" class="headerlink" title="3. LoginController"></a>3. LoginController</h3><p>在<code>src\main\java\com\example\springdemo1</code>目录下New->Directory，<code>controller</code>.</p>
-<p>New->JavaClass，<code>LoginController</code>.</p>
+<h3 id="3-LoginController"><a href="#3-LoginController" class="headerlink" title="3. LoginController"></a>3. LoginController</h3><p>在<code>src\main\java\com\example\springdemo1</code>目录下New-&gt;Directory，<code>controller</code>.</p>
+<p>New-&gt;JavaClass，<code>LoginController</code>.</p>
 <p>其逻辑为，Controller 是对响应进行处理的部分。这里我们设定账号是 admin，密码是 123456，分别与接收到的 User 类的 username 和 password 进行比较。</p>
 <p>根据结果返回不同的 Result，即不同的响应码。前端如果接收到成功的响应码（200），则跳转到 /index 页面。代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.springdemo1.result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.springdemo1.result.Result;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.util.HtmlUtils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.springdemo1.pojo.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Objects;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@CrossOrigin</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"api/login"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">login</span><span class="params">(@RequestBody User requestUser)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 对 html 标签进行转义，防止 XSS 攻击</span></span><br><span class="line">        String username = requestUser.getUsername();</span><br><span class="line">        String password = requestUser.getPassword();</span><br><span class="line">        username = HtmlUtils.htmlEscape(username);</span><br><span class="line">        <span class="keyword">if</span> (!Objects.equals(<span class="string">"admin"</span>, username) || !Objects.equals(<span class="string">"123456"</span>, password) &#123;</span><br><span class="line">            String message = <span class="string">"账号密码错误"</span>;</span><br><span class="line">            System.out.println(<span class="string">"test"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Result(<span class="number">400</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Result(<span class="number">200</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -410,7 +410,7 @@
 <h3 id="4-配置端口"><a href="#4-配置端口" class="headerlink" title="4. 配置端口"></a>4. 配置端口</h3><p> 最后，在 <code>src\main\resources</code> 文件夹下找到 <code>application.properties</code> 文件配置端口，即加上 <code>server.port=8443</code> </p>
 <h2 id="三-运行项目"><a href="#三-运行项目" class="headerlink" title="三. 运行项目"></a>三. 运行项目</h2><p> 同时运行前端和后端项目，访问 <code>localhost:8080/#/login</code>，输入用户名 <code>admin</code>，密码 <code>123456</code> </p>
 <p> 点击确定，成功进入 <code>localhost:8080/#/index</code> </p>
-</script></p>
+
       </div>
       
         <br>
@@ -421,10 +421,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-10-30T00:54:40+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-10-30T00:57:19+08:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
-    <p>updated at Oct 30, 2019</p>
+    <p>更新于 Oct 30, 2019</p>
   </a>
 </div>
 
@@ -497,7 +497,7 @@
               
                   <section class="next">
                       <span class="art-item-right" aria-hidden="true">
-                          <h6>Next&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                          <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
                               <a href="/2019/10/08/thoughts/" rel="prev" title="What&#39;s going on??">
                                   
@@ -636,14 +636,14 @@
   <section class='widget toc-wrapper'>
     
 <header class='pure'>
-  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;TOC</div>
+  <div><i class="fas fa-list fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;本文目录</div>
   
     <!-- <div class='wrapper'><a class="s-toc rightBtn" rel="external nofollow noopener noreferrer" href="javascript:void(0)"><i class="fas fa-thumbtack fa-fw"></i></a></div> -->
   
 </header>
 
     <div class='content pure'>
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景：-前后端项目已经创建成功。现使用反向代理，即-前端的请求通过前端服务器转发给后端，前后端之间通过-RESTful-API-传递-JSON-数据进行交流。-本次实验将编写一个登录模块来体现简单的前后端分离。"><span class="toc-text">背景： 前后端项目已经创建成功。现使用反向代理，即 前端的请求通过前端服务器转发给后端，前后端之间通过 RESTful API 传递 JSON 数据进行交流。 本次实验将编写一个登录模块来体现简单的前后端分离。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-前端部分"><span class="toc-text">一. 前端部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-前端页面开发"><span class="toc-text">1. 前端页面开发</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-Login-Vue"><span class="toc-text">1.1  Login.Vue</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景：-前后端项目已经创建成功。现使用反向代理，即-前端的请求通过前端服务器转发给后端，前后端之间通过-RESTful-API-传递-JSON-数据进行交流。-本次实验将编写一个登录模块来体现简单的前后端分离。"><span class="toc-text">背景： 前后端项目已经创建成功。现使用反向代理，即 前端的请求通过前端服务器转发给后端，前后端之间通过 RESTful API 传递 JSON 数据进行交流。 本次实验将编写一个登录模块来体现简单的前后端分离。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-前端部分"><span class="toc-text">一. 前端部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-前端页面开发"><span class="toc-text">1. 前端页面开发</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-Login-Vue"><span class="toc-text">1.1  Login.Vue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-MainIndex-Vue"><span class="toc-text">1.2 MainIndex.Vue</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-前端相关配置"><span class="toc-text">2. 前端相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-设置反向代理"><span class="toc-text">2.1 设置反向代理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-配置页面路由"><span class="toc-text">2.2 配置页面路由</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-跨域支持"><span class="toc-text">2.3 跨域支持</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-运行项目"><span class="toc-text">3. 运行项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-后端部分"><span class="toc-text">二. 后端部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Pojo-User-类"><span class="toc-text">1.  Pojo(User 类)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Result-类"><span class="toc-text">2. Result 类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-LoginController"><span class="toc-text">3. LoginController</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-配置端口"><span class="toc-text">4. 配置端口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-运行项目"><span class="toc-text">三. 运行项目</span></a>
     </div>
   </section>
 
@@ -823,7 +823,7 @@
   <section class='widget tagcloud'>
     
 <header class='pure'>
-  <div><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;Hot Tags</div>
+  <div><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;&nbsp;热门标签</div>
   
     <a class="rightBtn"
     
@@ -1025,19 +1025,19 @@
     </div>
   
   <br>
-  <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+  <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
 </div>
   <div>
-    Use
+    本站使用
     <a href="https://xaoxuu.com/wiki/material-x/" target="_blank" class="codename">Material X</a>
-    as theme
+    作为主题
     
-      , 
-      total visits
+      ，
+      总访问量为
       <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
-      times
+      次
     
-    . 
+    。
   </div>
 </footer>
 <script>setLoadingBarProgress(80);</script>
@@ -1143,15 +1143,15 @@
 <!-- 复制 -->
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
-  let COPY_SUCCESS = "Copied";
-  let COPY_FAILURE = "Copy failed";
+  let COPY_SUCCESS = "复制成功";
+  let COPY_FAILURE = "复制失败";
   /*页面载入完成后，创建复制按钮*/
   !function (e, t, a) {
     /* code */
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '  <i class="fa fa-copy"></i><span>Copy</span>';
+      copyHtml += '  <i class="fa fa-copy"></i><span>复制</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
