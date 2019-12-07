@@ -4,6 +4,95 @@
   
     
     <entry>
+      <title>百度坐标转换</title>
+      <link href="/2019/12/07/%E7%99%BE%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/"/>
+      <url>/2019/12/07/%E7%99%BE%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/</url>
+      
+        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote><p>目前国内主要有以下三种坐标系：</p><p>WGS84：为一种大地坐标系，也是目前广泛使用的GPS全球卫星定位系统使用的坐标系。</p><p>GCJ02：又称火星坐标系，是由中国国家测绘局制订的地理信息系统的坐标系统。由WGS84坐标系经加密后的坐标系。</p><p>BD09：为百度坐标系，在GCJ02坐标系基础上再次加密。其中bd09ll表示百度经纬度坐标，bd09mc表示百度墨卡托米制坐标。</p><p>非中国地区地图，服务坐标统一使用WGS84坐标。</p></blockquote><h2 id="转换方法"><a href="#转换方法" class="headerlink" title="转换方法"></a>转换方法</h2><p>百度对外接口的坐标系为BD09坐标系，并不是GPS采集的真实经纬度，在使用百度地图JavaScript API服务前，需先将非百度坐标通过坐标转换接口转换成百度坐标。 坐标转换、批量坐标转换示例详见<a href="http://lbsyun.baidu.com/jsdemo.htm#a5_2" target="_blank" rel="noopener"><strong>JavaScript API示例</strong></a>。 </p><h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>从云平台读出的数据流为json格式，把for循环的i传入回调函数，以实现标注内容的对应与添加。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> loc = <span class="built_in">JSON</span>.parse(<span class="string">'$&#123;loc&#125;'</span>);</span><br><span class="line">recievePoints(loc);</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">recievePoints</span>(<span class="params">loc</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;loc.length;i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> convertor = <span class="keyword">new</span> BMap.Convertor();</span><br><span class="line">            <span class="keyword">var</span> pointArr = [];</span><br><span class="line">            <span class="keyword">var</span> gpsPoint= <span class="keyword">new</span> BMap.Point(loc[i][<span class="string">"lon"</span>],loc[i][<span class="string">"lat"</span>]);</span><br><span class="line">            pointArr.push(gpsPoint);</span><br><span class="line">            convertor.translate(pointArr,<span class="number">1</span>,<span class="number">5</span>,<span class="function"><span class="keyword">function</span> <span class="title">addPoints</span>(<span class="params">data,ano=i</span>)</span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(data);</span><br><span class="line">                <span class="built_in">console</span>.log(ano)</span><br><span class="line">                <span class="keyword">if</span> (data.status === <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">var</span> marker = <span class="keyword">new</span> BMap.Marker(data.points[<span class="number">0</span>]);<span class="comment">// 创建标注</span></span><br><span class="line">                    map.addOverlay(marker);               <span class="comment">// 将标注添加到地图中</span></span><br><span class="line">                    <span class="keyword">var</span> content = <span class="string">"名称："</span> + loc[ano][<span class="string">"name"</span>] +<span class="comment">/*"&lt;br&gt;经度："+p.lng+"&lt;br&gt;纬度："+p.lat+*/</span><span class="string">"&lt;br&gt;所在城市："</span> + loc[ano][<span class="string">"city"</span>] + <span class="string">"&lt;br&gt;地址："</span> + loc[ano][<span class="string">"address"</span>] + <span class="string">"&lt;br&gt;是否水浸："</span> + loc[ano][<span class="string">"soak"</span>] + <span class="string">"&lt;br&gt;水位："</span> + loc[ano][<span class="string">"level"</span>];</span><br><span class="line">                    <span class="comment">//console.log(ano);</span></span><br><span class="line">                    <span class="keyword">if</span> (loc[ano][<span class="string">"soak"</span>].trim() == <span class="string">"1"</span>.trim()) &#123;</span><br><span class="line">                        marker.setAnimation(BMAP_ANIMATION_BOUNCE);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        marker.setAnimation();</span><br><span class="line">                    &#125;</span><br><span class="line">                    addClickHandler(content, marker);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> JavaScript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>数学之美</title>
+      <link href="/2019/11/21/%E6%95%B0%E5%AD%A6%E4%B9%8B%E7%BE%8E/"/>
+      <url>/2019/11/21/%E6%95%B0%E5%AD%A6%E4%B9%8B%E7%BE%8E/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>随着时代变迁、科技发展，数学与信息之间的关系越来越密切</p></blockquote><h2 id="一-文字和语言vs数字和信息"><a href="#一-文字和语言vs数字和信息" class="headerlink" title="一.文字和语言vs数字和信息"></a>一.文字和语言vs数字和信息</h2><p>人们需要表达的东西越来越多</p><p>通信模型</p><p>Rosetta石碑</p><h2 id="二-自然语言处理—从规则到统计"><a href="#二-自然语言处理—从规则到统计" class="headerlink" title="二.自然语言处理—从规则到统计"></a>二.自然语言处理—从规则到统计</h2><p>从试图让机器理解自然语言，到利用统计处理语言</p><h2 id="三-统计语言模型！"><a href="#三-统计语言模型！" class="headerlink" title="三.统计语言模型！"></a>三.统计语言模型！</h2><p>马尔可夫模型</p><p>二分模型</p><h2 id="四-分词"><a href="#四-分词" class="headerlink" title="四.分词"></a>四.分词</h2><p>嵌入分词</p><h2 id="五-隐含马尔可夫模型"><a href="#五-隐含马尔可夫模型" class="headerlink" title="五.隐含马尔可夫模型"></a>五.隐含马尔可夫模型</h2><p>通信模型：  发送者-&gt;(编码)-&gt;信道-&gt;(解码)-&gt;接收者</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> reading </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>汇编常识</title>
+      <link href="/2019/11/18/%E6%B1%87%E7%BC%96%E5%B8%B8%E8%AF%86/"/>
+      <url>/2019/11/18/%E6%B1%87%E7%BC%96%E5%B8%B8%E8%AF%86/</url>
+      
+        <content type="html"><![CDATA[<ol><li><p><strong>CS、IP的初值由操作系统赋值。</strong></p><p><strong>SS、SP的初值①由程序员赋值、②由操作系统自动赋值</strong></p><p><strong>其余的初值由程序员赋值</strong></p></li><li><p><strong>Assume只是给编译器一个信息，告诉编译器相关段寄存器和段的联系。</strong></p></li><li><p>*<em>不能直接将立即数送入段寄存器，应使用通用寄存器转，例如想给DS中放1234H，应如下操作： *</em></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV AX,1234H</span><br><span class="line">MOV DS,AX</span><br></pre></td></tr></table></figure></li><li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD AL,30H ;将数字转换成对应的ASCII码</span><br></pre></td></tr></table></figure></li><li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">通用数据传送指令.     </span><br><span class="line">MOV----&gt; move  </span><br><span class="line">PUSH----&gt;push</span><br><span class="line">POP----&gt;pop     </span><br><span class="line">XCHG----&gt;exchange</span><br><span class="line">目的地址传送指令.     </span><br><span class="line">LEA----&gt;load effective address  </span><br><span class="line">PUSHF----&gt;push flag</span><br><span class="line">POPF----&gt;pop flag</span><br></pre></td></tr></table></figure></li><li><p><strong>目标操作数不允许用立即数方式</strong>  </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV 2000H, AL</span><br></pre></td></tr></table></figure></li><li><p><strong>不允许在两个存储单元间传送数据</strong> </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV[2000H],[3000H]</span><br></pre></td></tr></table></figure></li><li><p><strong>不允许在两个段寄存器之间传送数据</strong> </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV DS, ES</span><br></pre></td></tr></table></figure></li><li><p><strong>PTR</strong></p></li><li><p>s</p></li><li><p>s</p></li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> basic </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2019/11/13/%E7%8E%B0%E7%AE%A1MOOC%E7%AD%94%E6%A1%88/"/>
+      <url>/2019/11/13/%E7%8E%B0%E7%AE%A1MOOC%E7%AD%94%E6%A1%88/</url>
+      
+        <content type="html"><![CDATA[<p>1单选(2分)<br>形成一种管理活动除了要有管理的主体、管理的客体，还需要有<br>A.管理的手段<br>B.管理的工具<br>C.管理的理论<br><font color="red">D.管理的目的</font></p><p>2单选(2分)<br>最早对管理的具体职能加以概括和系统论述的是管理过程学派创始人<br><font color="red">A.法约尔</font><br>B.泰勒<br>C.巴纳德<br>D.梅奥</p><p>3单选(2分)<br>企业战略必须整合企业的内部资源和企业的外部资源，这体现了企业战略的<br>A.协同性<br>B.纲领性<br>C.长远性<br><font color="red">D.全局性</font></p><p>4单选(2分)<br>企业战略是一个相互支持、协调的战略层次网，在最高级别的公司战略层次之下的是<br>A.职能支持战略<br>B.支持战略<br><font color="red">C.竞争战略</font><br>D.职能战略</p><p>5单选(2分)<br>下列各战略属于集中战略具体应用形式的是<br>A.紧缩战略<br><font color="red">B.市场渗透战略</font><br>C.差异化战略<br>D.成本领先战略</p><p>6单选(2分)<br>生产系统的核心功能是<br><font color="red">A.转化</font><br>B.输出<br>C.输入<br>D.控制</p><p>7单选(2分)<br>若企业的专业方向确定、产量稳定，工种和设备齐全，则适合采用的生产组织形式是<br>A.综合专业化形式<br>B.工艺专业化形式<br><font color="red">C.对象专业化形式</font><br>D.工件流程化形式</p><p>8单选(2分)<br>质量的特性是多方面的，但总体上可以概括为<br><font color="red">A.适用性</font><br>B.经济性<br>C.可靠性<br>D.安全性</p><p>9单选(2分)<br>质量管理发展依次经历的四个阶段是<br>A.质量检验阶段；定量质量控制阶段；全面质量管理阶段；ISO9000质量管理体系认证阶段<br><font color="red">B.质量检验阶段；统计质量控制阶段；全面质量管理阶段；ISO9000质量管理体系认证阶段</font><br>C.质量统计阶段；质量控制阶段；全面质量管理阶段；ISO9000质量管理体系认证阶段<br>D.质量检验阶段；统计质量控制阶段；ISO9000质量管理体系认证阶段；全面质量管理阶段</p><p>10单选(2分)<br>最早提出全面质量管理概念的学者是<br>A.戴明&amp;费根鲍姆<br>B.朱兰&amp;戴明<br><font color="red">C.费根堡姆&amp;朱兰</font><br>D.休哈特&amp;戴明</p><p>11单选(2分)<br>人力资源管理要注重团队建设，这反映了人力资源特性之<br>A.二重性<br><font color="red">B.社会性</font><br>C.再生性<br>D.能动性</p><p>12单选(2分)<br>下列不属于已实现的社会劳动力供给的是<br><font color="red">A.就学人口</font><br>B.未成年就业人口<br>C.老年就业人口<br>D.求业人口</p><p>13单选(2分)<br>资金在运动中由于时间因素会造成价值的改变。这反映了财务管理观点之<br>A.经济效益观念<br>B.保值增值的观点<br>C.市场观念<br><font color="red">D.时间价值观念</font></p><p>14单选(2分)<br>反映企业一定时期内的经营收入、经营费用和经营效益的总量和结构关系的报表是<br>A.资产负债表<br>B.所有者收益表<br>C.现金流量表<br><font color="red">D.损益表</font></p><p>15单选(2分)<br>能够揭示企业财务风险的企业财务分析是<br>A.盈利能力分析<br>B.负债能力分析<br>C.运营能力分析<br><font color="red">D.支付能力分析</font></p><p>16单选(2分)<br>在产品生产准备和加工过程中由于工艺技术等方面而产生的损耗称为<br>A.必需损耗<br><font color="red">B.工艺性损耗</font><br>C.非工艺性损耗<br>D.经济性损耗</p><p>17单选(2分)<br>企业设备管理的首要环节是<br>A.设备购买<br>B.设备设计<br>C.设备规划<br><font color="red">D.设备选择</font></p><p>18单选(2分)<br>俗话所说的“摸着钱袋子花钱”反映出消费者需求的<br>A.替代性<br>B.多样性<br><font color="red">C.伸缩性</font><br>D.发展性</p><p>19单选(2分)<br>把一个整体市场划分为若干个消费者群的市场分类过程叫做<br>A.市场规划<br>B.市场调研<br>C.市场发现<br><font color="red">D.市场细分</font></p><p>20单选(2分)<br>下列定价策略中不适用于新产品定价的是<br>A.适中定价<br><font color="red">B.声望定价</font><br>C.撇脂定价<br>D.渗透定价</p><p>21判断(2分)<br>企业所承担的社会责任与政治责任对企业的经济性行为无法起到决定性影响。(×)</p><p><code>企业的社会性：现代企业已是一个向社会全面开放的系统，它所承担的社会责任与政治责任有时甚至会对其经济性行为产生决定性影响。</code></p><p>22判断(2分)<br>不具有独立法人地位的企业属于非法形式的企业。(√)</p><p>``</p><p>23判断(2分)<br>企业本身是一个大系统，包含各业务性运营系统和管理性协调系统。(√)</p><p><code>对</code></p><p>24判断(2分)<br>企业文化是企业在所处的特殊社会环境中形成的，是企业的外部战略要素之一。(×)</p><p>``</p><p>25判断(2分)<br>科学的企业战略评估指标体系可以使企业战略评估不受主观因素影响。(√)</p><p>``</p><p>26判断(2分)<br>生产过程组织的节奏性反映了生产过程组织要满足均衡性的基本要求。(√)</p><p>``</p><p>27判断(2分)<br>通过服务质量五要素对商家所提供服务的满意度进行判断都会得到正面评价。(×)</p><p>``</p><p>28判断(2分)<br>对于服务业而言，相比于高质量的内部服务为一线员工创造高的内部顾客让渡价值，通过高质量的外部服务为顾客创造出高的顾客让渡价值更重要。(×)</p><p><code>要使服务利润链“链条”能够正相关联动起来，不仅外部服务要为顾客创造出高的顾客让渡价值，更重要的是通过高质量的内部服务为一线员工创造高的“内部顾客让渡价值”。</code></p><p>29判断(2分)<br>朱兰提出：产品质量不仅要满足使用者明确的要求，还要满足其潜在的需求。(√)</p><p>``</p><p>30判断(2分)<br>质量管理的终极目标就是将最高质量的产品提供给用户。(×)</p><p><code>提高产品质量和工作质量,满足社会和用户的需要</code></p><p>31判断(2分)<br>绩效沟通在绩效管理中发挥着重要作用，缺少了它的绩效管理是不完整的。(√)</p><p><code>对</code></p><p>32判断(2分)<br>绩效目标主要有两个来源：组织战略目标和客户的需要。(×)</p><p><code>还有部门及岗位职责</code></p><p>33判断(2分)<br>广义的薪酬包括直接经济性薪酬、间接经济性薪酬以及非经济性薪酬。(√)</p><p>``</p><p>34判断(2分)<br>负债资金和权益资本可以互相转换。(×)</p><p><code>在特定的条件下，有些负债可转换为权益资本，但权益资本不能转换为负债资金。</code></p><p>35判断(2分)<br>为了保证企业发展壮大，企业筹集资金的数额越大越好。（×）</p><p><code>筹资过多， 会增加筹资费用;筹资过少，又会影响资金供求。所以必须合理确定企业的筹资数额，既能节约成本又能供给企业正常的资金需求。</code></p><p>36判断(2分)<br>无论是有形磨损还是无形磨损对于企业来说，都是不经济的，应尽量避免。(√)</p><p><code>一种是由于生产完全同类的劳动资料的劳动生产率提高，从而造成了原有的固定资本价值的下降；另一种则是由于出现了更为低廉的替代品，从而引起了原有固定资本价值的贬损。</code></p><p>37判断(2分)<br>在设备自然寿命周期中，其故障率随着使用时间增长而不断提升。(×)</p><p><code>浴盆曲线</code></p><p>38判断(2分)<br>定期订购法可以完全保证企业生产物资供应。（×）</p><p><code>定期订购法有可能发生缺货的情况。</code></p><p>39判断(2分)<br>任何类型的客户的购买行为特征都是一样的。(×)</p><p><code>错</code></p><p>40判断(2分)<br>产品就是满足人们某种需求的有形实物。(×)</p><p><code>产品是指能够提供给市场，被人们使用和消费，并能满足人们某种需求的任何东西，包括有形的物品、无形的服务、组织、观念或它们的组合。</code></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>跳脱</title>
+      <link href="/2019/11/13/%E8%B7%B3%E8%84%B1/"/>
+      <url>/2019/11/13/%E8%B7%B3%E8%84%B1/</url>
+      
+        <content type="html"><![CDATA[<p>我不要被情绪所牵引，我需要掌控自己，控制自己的心情，就像我以前一直跟别人说的一样。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> thoughts </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>The Lack and the gain</title>
       <link href="/2019/11/02/The%20Lack/"/>
       <url>/2019/11/02/The%20Lack/</url>
